@@ -48,6 +48,8 @@ h1 {
             border: none;
             background-color: green;
             height: 2rem;
+            color: white;
+            font-weight: bolder;
         }
     ul {
         display:flex;
@@ -65,6 +67,7 @@ h1 {
         gap: 0.1rem;
         background-color: rgb(43, 48, 77);
         transition: all 0.3s ease-in-out;
+        font-size: 16px;
     }
 
     li:hover {
@@ -81,16 +84,22 @@ h1 {
 
     li button{
         border: none;
-        height:1rem;
-        width: 1rem;
+        height:2rem;
+        width: 2rem;
+        background-size: 90%;
+        background-repeat: no-repeat;
+        
     }
     
     .add {
         background-color: green;
+        background-image: url("../Resources/check.svg");        
     }
     .edit {
         background-color: lightskyblue;
+        background-image: url("../Resources/edit.svg");
     }
     .delete {
         background-color:brown;
+        background-image: url("../Resources/delete.svg");
     }

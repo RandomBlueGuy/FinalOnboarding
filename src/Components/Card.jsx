@@ -58,10 +58,11 @@ export default function Card() {
                         <p> {index +1} - {item}</p>
                         <button className="add" onClick={() => {
                             alert("Tarea completada");
-                        }}>+</button>
+
+                        }, disabled }></button>
                         <button className="edit" onClick={() => {
                             
-                        }}>E</button>
+                        }}></button>
                         <button className="delete" onClick={() => DeleteItems(index)}>
 
                         </button>
