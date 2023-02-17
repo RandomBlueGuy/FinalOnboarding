@@ -11,8 +11,6 @@ import checkIcon from '../Resources/check.svg';
 export default function Card() {
     const [newList , setNewList] = useState([]);
     const [listMember , setListMember] = useState('');
-
-    console.log(newList)
     const addListMemberValue = (event) => {
         setListMember(event.target.value);  
     };
@@ -21,7 +19,6 @@ export default function Card() {
           .then(response => response.json())
           .then(json => {//map
             // Tomamos lo que retorna la base de datos que es un array de objetos [{title: "value"}] y extraemos el value con . que se guarda en la variable list
-            console.log(json)
             setNewList([...json])     
           });
       }, []);
@@ -30,7 +27,6 @@ export default function Card() {
     async function addNewToList(event) {
         event.preventDefault();
         const data = {title: listMember}
-        console.log(data)
         //llamar a la api para guardar el dato {title: “programar”}
         const response = await fetch("http://localhost:8080/api/tasks", {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -41,21 +37,14 @@ export default function Card() {
             },
             body: JSON.stringify(data) // body data type must match "Content-Type" header
           }).then(response => response.json()
-          ).then(json => setNewList([...newList, json]))
-        console.log(response)
-
-        
+          ).then(json => setNewList([...newList, json]))   
         setListMember('');
     };
     const DeleteItems = (indexItem) => {
-        console.log("index", indexItem)
             let text = "Press a button!\n¿Are you sure to delete this item? OK or Cancel.";
             if (window.confirm(text) === true) {
-                console.log("Estado actual", newList )
                 const result = newList.filter((item, index) => item.id !== indexItem )
-                console.log("Estado siguiente", result);
-                setNewList([...result])
-                
+                setNewList([...result])       
                 fetch(`http://localhost:8080/api/tasks/${indexItem} `, {
                     method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
                     mode: 'cors', // no-cors, *cors, same-origin           
@@ -71,7 +60,6 @@ export default function Card() {
         const data = {title: resInput}
         const updatedTask = {...findObject, title: resInput}
         const indexObj = newList.findIndex(item => item.id === updatedTask.id)
-        console.log("INDEX:", indexObj)
         newList[indexObj] = updatedTask;
         setNewList([...newList]);
 
@@ -84,7 +72,6 @@ export default function Card() {
             // 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: JSON.stringify(data) // body data type must match "Content-Type" header
-            
         }).then(response => response.json()
     ).then(json => setNewList([...newList]))     
     }
@@ -92,35 +79,29 @@ export default function Card() {
     const EditItems = (indexItem) => {
         const findObject = newList.find((task) => task.id === indexItem)
         const resInput = window.prompt("Ingrese la tarea por la que desea cambiar");
-        console.log(resInput)
         if (resInput) {
             const data = {title: resInput}
             const updatedTask = {...findObject, title: resInput}
-            //newList[findObject] = updatedTask; 
             const indexObj = newList.findIndex(item => item.id === updatedTask.id)
-            console.log("INDEX:", indexObj)
             newList[indexObj] = updatedTask;
             setNewList([...newList]);
-
             const response = fetch(`http://localhost:8080/api/tasks/${indexItem}`, {
                 method: 'PUT', // *GET, POST, PUT, DELETE, etc.
                 mode: 'cors', // no-cors, *cors, same-origin
                 headers: {
                   'Content-Type': 'application/json'
                   // 'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                
-                body: JSON.stringify(data) // body data type must match "Content-Type" header
-                
+                },    
+                body: JSON.stringify(data) // body data type must match "Content-Type" header          
               }).then(response => response.json()
               ).then(json => setNewList([...newList])) 
         } 
 
     };
 
-
   return (
     <main className='container'>
+
         <section className="header">
             <h1>To-do-list</h1>
         </section>
@@ -140,9 +121,7 @@ export default function Card() {
                                 <p> {item.id} - {item.title}</p>
                                 <button className="add" id = "addBtn" onClick={() => {completeTask(item.id)}}><img src={checkIcon}  alt="" /></button>
                                 <button className="edit" onClick={() => {EditItems(item.id)}}><img src={editIcon}  alt="" /></button>
-                                <button className="delete" onClick={ () => DeleteItems(item.id)} >
-                                
-                                <img src={deleteIcon}  alt="" /></button>
+                                <button className="delete" onClick={ () => DeleteItems(item.id)}><img src={deleteIcon}  alt="" /></button>
                             </li>
                             )}
                         )}
