@@ -1,32 +1,33 @@
 import React from 'react';
 import './Card.css';
 import { useState, useEffect } from "react";
-import checkIcon from '../Resources/check.svg';
+
 import editIcon from '../Resources/edit.svg';
 import deleteIcon from '../Resources/delete.svg';
 import plusIcon from '../Resources/plus.svg';
+import submitIcon from '../Resources/submit.svg';
+import checkIcon from '../Resources/check.svg';
 
 export default function Card() {
     const [newList , setNewList] = useState([]);
     const [listMember , setListMember] = useState('');
+
+    console.log(newList)
     const addListMemberValue = (event) => {
-        setListMember(event.target.value);
-    
+        setListMember(event.target.value);  
     };
     useEffect(() => {
         fetch("http://localhost:8080/api/tasks")
           .then(response => response.json())
-          .then(json => {
-            // Tomamos lo que retorna la base de datos que es un array de objetos [{title: "value"}] y extraemos el value con .map que se guarda en la variable list
+          .then(json => {//map
+            // Tomamos lo que retorna la base de datos que es un array de objetos [{title: "value"}] y extraemos el value con . que se guarda en la variable list
             console.log(json)
-            //const list = json.map(element => element.title)
-            setNewList([...json])
-            
+            setNewList([...json])     
           });
       }, []);
 
 
-    async function  addNewToList(event) {
+    async function addNewToList(event) {
         event.preventDefault();
         const data = {title: listMember}
         console.log(data)
@@ -57,21 +58,64 @@ export default function Card() {
                 
                 fetch(`http://localhost:8080/api/tasks/${indexItem} `, {
                     method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
-                    mode: 'cors', // no-cors, *cors, same-origin
-                        
+                    mode: 'cors', // no-cors, *cors, same-origin           
                 });    
                 
             } 
       };
+    
+    const completeTask = (indexItem) =>{ // COMPLETE TASK BUTTON
+        alert("Tarea completada");
+        const findObject = newList.find((task) => task.id === indexItem)
+        const resInput = `${findObject.title}  (Task completed)`;
+        const data = {title: resInput}
+        const updatedTask = {...findObject, title: resInput}
+        const indexObj = newList.findIndex(item => item.id === updatedTask.id)
+        console.log("INDEX:", indexObj)
+        newList[indexObj] = updatedTask;
+        setNewList([...newList]);
 
+    //////////////////////
+    const response = fetch(`http://localhost:8080/api/tasks/${indexItem}`, {
+            method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+            
+        }).then(response => response.json()
+    ).then(json => setNewList([...newList]))     
+    }
 
     const EditItems = (indexItem) => {
-        
-        newList[indexItem] = window.prompt("muahahahahaha");
-        console.log(newList)
-        setNewList([...newList]);
-        console.log(newList)
-        
+        const findObject = newList.find((task) => task.id === indexItem)
+        const resInput = window.prompt("Ingrese la tarea por la que desea cambiar");
+        console.log(resInput)
+        if (resInput) {
+            const data = {title: resInput}
+            const updatedTask = {...findObject, title: resInput}
+            //newList[findObject] = updatedTask; 
+            const indexObj = newList.findIndex(item => item.id === updatedTask.id)
+            console.log("INDEX:", indexObj)
+            newList[indexObj] = updatedTask;
+            setNewList([...newList]);
+
+            const response = fetch(`http://localhost:8080/api/tasks/${indexItem}`, {
+                method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                headers: {
+                  'Content-Type': 'application/json'
+                  // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                
+                body: JSON.stringify(data) // body data type must match "Content-Type" header
+                
+              }).then(response => response.json()
+              ).then(json => setNewList([...newList])) 
+        } 
+
     };
 
 
@@ -90,22 +134,18 @@ export default function Card() {
             </form>
             <div className="list1">
                 <ul className='to-do-list'>
-                    {newList.map((item , index)=> 
-                    <li key={item.id}>
-                        <p> {item.id} - {item.title}</p>
-                        <button className="add" onClick={() => {
-                            alert("Tarea completada");
-
-                        }}><img src={checkIcon}  alt="" /></button>
-                        <button className="edit" onClick={() => {EditItems(item.id)}}
-
-                        ><img src={editIcon}  alt="" /></button>
-                        <button className="delete" onClick={ () => DeleteItems(item.id)} >
-                        
-                        <img src={deleteIcon}  alt="" /></button>
-                    </li>)}
-
-                    
+                    {newList.map((item , index)=> {
+                        return(
+                            <li key={index}>
+                                <p> {item.id} - {item.title}</p>
+                                <button className="add" id = "addBtn" onClick={() => {completeTask(item.id)}}><img src={checkIcon}  alt="" /></button>
+                                <button className="edit" onClick={() => {EditItems(item.id)}}><img src={editIcon}  alt="" /></button>
+                                <button className="delete" onClick={ () => DeleteItems(item.id)} >
+                                
+                                <img src={deleteIcon}  alt="" /></button>
+                            </li>
+                            )}
+                        )}
                 </ul>
             </div>
 
