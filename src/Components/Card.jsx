@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import editIcon from '../Resources/edit.svg';
 import deleteIcon from '../Resources/delete.svg';
 import plusIcon from '../Resources/plus.svg';
-import submitIcon from '../Resources/submit.svg';
 import checkIcon from '../Resources/check.svg';
 
 export default function Card() {
@@ -15,7 +14,7 @@ export default function Card() {
         setListMember(event.target.value);  
     };
     useEffect(() => {
-        fetch("http://localhost:8080/api/tasks")
+        fetch("https://reto-final-tasks.onrender.com/api/tasks")
           .then(response => response.json())
           .then(json => {//map
             // Tomamos lo que retorna la base de datos que es un array de objetos [{title: "value"}] y extraemos el value con . que se guarda en la variable list
@@ -27,13 +26,11 @@ export default function Card() {
     async function addNewToList(event) {
         event.preventDefault();
         const data = {title: listMember}
-        //llamar a la api para guardar el dato {title: “programar”}
-        const response = await fetch("http://localhost:8080/api/tasks", {
+        const response = await fetch("https://reto-final-tasks.onrender.com/api/tasks", {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             headers: {
               'Content-Type': 'application/json'
-              // 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: JSON.stringify(data) // body data type must match "Content-Type" header
           }).then(response => response.json()
@@ -45,11 +42,10 @@ export default function Card() {
             if (window.confirm(text) === true) {
                 const result = newList.filter((item, index) => item.id !== indexItem )
                 setNewList([...result])       
-                fetch(`http://localhost:8080/api/tasks/${indexItem} `, {
+                fetch(`https://reto-final-tasks.onrender.com/api/tasks/${indexItem} `, {
                     method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
                     mode: 'cors', // no-cors, *cors, same-origin           
-                });    
-                
+                });            
             } 
       };
     
@@ -63,13 +59,11 @@ export default function Card() {
         newList[indexObj] = updatedTask;
         setNewList([...newList]);
 
-    //////////////////////
-    const response = fetch(`http://localhost:8080/api/tasks/${indexItem}`, {
+    const response = fetch(`https://reto-final-tasks.onrender.com/api/tasks/${indexItem}`, {
             method: 'PUT', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             headers: {
             'Content-Type': 'application/json'
-            // 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: JSON.stringify(data) // body data type must match "Content-Type" header
         }).then(response => response.json()
@@ -85,12 +79,11 @@ export default function Card() {
             const indexObj = newList.findIndex(item => item.id === updatedTask.id)
             newList[indexObj] = updatedTask;
             setNewList([...newList]);
-            const response = fetch(`http://localhost:8080/api/tasks/${indexItem}`, {
+            const response = fetch(`https://reto-final-tasks.onrender.com/api/tasks/${indexItem}`, {
                 method: 'PUT', // *GET, POST, PUT, DELETE, etc.
                 mode: 'cors', // no-cors, *cors, same-origin
                 headers: {
                   'Content-Type': 'application/json'
-                  // 'Content-Type': 'application/x-www-form-urlencoded',
                 },    
                 body: JSON.stringify(data) // body data type must match "Content-Type" header          
               }).then(response => response.json()
