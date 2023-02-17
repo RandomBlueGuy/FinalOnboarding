@@ -5,26 +5,35 @@ h1 {
 
 .container {
     width: 80%;
-    height: 600px;
+    max-width: 800px;
+    height: 1000vh;
     background-color: rgb(25, 29, 52);
     display: flex;
     flex-direction: column;
     border-radius: 1rem;
     overflow: hidden;
+    box-shadow: 0 0 20px rgba(20, 20, 20, 0.3);
 }
+button {
+    border-radius: 3px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
 
     .header {
         width: 100;
         height: 50px;
-        background-color: rgb(43, 48, 77);
+        background-color: rgb(28, 34, 66);
 
     }
 
     .body-ctn {
         width: 90%;
         margin: 5%;
-        height: 500px;
-        background-color: black;
+        
+        background-color: rgb(20, 30, 61);
         border-radius: 0.5rem;
         overflow: hidden;
     }
@@ -32,7 +41,7 @@ h1 {
     .input-ctn {
         width: 100;
         height: 50px;
-        background-color: rgb(48, 62, 114);
+        background-color: rgb(33, 45, 84);;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -50,7 +59,24 @@ h1 {
             height: 2rem;
             color: white;
             font-weight: bolder;
+            transition: all 0.3s ease-in-out; 
+            display:flex;
+            align-items: center;
+            justify-self: space-evenly;
+            gap: 0.2rem;
+            
         }
+
+        .input-ctn button img{
+            width: 20%;
+        }
+
+        .input-ctn button:disabled{
+            background-color: gray;
+            opacity: 0.8
+        }
+
+
     ul {
         display:flex;
         flex-direction: column;
@@ -64,22 +90,26 @@ h1 {
         width: 90%;
         align-items: center;
         justify-content: center;
-        gap: 0.1rem;
+        gap: 0.3rem;
         background-color: rgb(43, 48, 77);
         transition: all 0.3s ease-in-out;
         font-size: 16px;
+        border-radius: 5px;
+        padding: 0.25rem;
     }
 
     li:hover {
         transition: all 0.3s ease-in-out;
         transform: scale(1.05);
         background-color: rgb(59, 66, 105);
+        box-shadow: 0 0 12px rgba(239, 239, 239, 0.2);
     }
 
     li p {
         flex-grow: 1;
         text-align: left;
         margin: 0;
+        padding-left: 1rem;
     }
 
     li button{
@@ -91,15 +121,23 @@ h1 {
         
     }
     
+    li button:hover {
+        transition: all 0.3s ease-in-out;
+        transform: scale(1.1);
+        box-shadow: 0 0 10px rgb(23, 124, 213);
+    }  
+
     .add {
         background-color: green;
-        background-image: url("../Resources/check.svg");        
     }
     .edit {
-        background-color: lightskyblue;
-        background-image: url("../Resources/edit.svg");
+        background-color: rgb(47, 127, 176);
+
     }
     .delete {
         background-color:brown;
-        background-image: url("../Resources/delete.svg");
+    }
+
+    img {
+        filter: brightness(0) invert(1);
     }
