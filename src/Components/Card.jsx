@@ -118,7 +118,7 @@ export default function Card() {
                     {newList.map((item , index)=> {
                         return(
                             <li key={index}>
-                                <p> {item.id} - {item.title}</p>
+                                <p> {index + 1} - {item.title}</p>
                                 <button className="add" id = "addBtn" onClick={() => {completeTask(item.id)}}><img src={checkIcon}  alt="" /></button>
                                 <button className="edit" onClick={() => {EditItems(item.id)}}><img src={editIcon}  alt="" /></button>
                                 <button className="delete" onClick={ () => DeleteItems(item.id)}><img src={deleteIcon}  alt="" /></button>
